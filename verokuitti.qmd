@@ -15,7 +15,7 @@ editor: visual
 
 ## Johdanto
 
-[Verokuitti](https://web.archive.org/web/20191001231657/http://verokuitti.fi/)[^1] oli vuosina 2011-2013 ylläpidetty palvelu, joka visualisoi [Suomen valtion budjetin](https://budjetti.vm.fi/) yhden veronmaksajan tasolla kaupan kuitin muodossa. Palvelu voitti 2011 Apps4Finland-gaalassa Helsingin Sanomien erikoispalkinnon vuoden parhaasta tietojournalismista. Seuraavana vuonna se oli ehdolla kansainvälisessä Data Journalism Awards -kilpailussa. 
+[Verokuitti](https://web.archive.org/web/20191001231657/http://verokuitti.fi/)[^1] oli vuosina 2011-2013 ylläpidetty palvelu, joka visualisoi [Suomen valtion budjetin](https://budjetti.vm.fi/) yhden veronmaksajan tasolla kaupan kuitin muodossa. Palvelu voitti 2011 Apps4Finland-gaalassa Helsingin Sanomien erikoispalkinnon vuoden parhaasta tietojournalismista. Seuraavana vuonna se oli ehdolla kansainvälisessä Data Journalism Awards -kilpailussa.
 
 [^1]: Verokuitti on kirjoitushetkellä käytettävissä osoitteessa <https://www.talousviisas.fi/verokuitti/>
 
@@ -23,7 +23,7 @@ Palvelu kirvoitti jopa [kirjallisen kysymyksen Eduskunnassa vuonna 2019](https:/
 
 Tämä dokumentti käy läpi miten Verokuitti toimi n. vuonna 2013 sekä sisältää vihjeitä miten vastaavan laskelman voisi toteuttaa vuonna 2025 ja mitä haasteita siihen sisältyy.
 
-Verokuitin alkuperäiset tekijät olivat Pär Österlund, Kari Silvennoinen ja Jon Haglund. 
+Verokuitin alkuperäiset tekijät olivat Pär Österlund, Kari Silvennoinen ja Jon Haglund.
 
 ## Datan kerääminen
 
@@ -33,7 +33,7 @@ Alkuperäinen Verokuitti koostui Ruby-koodista[^2], joka keräsi budjettidatan v
 
 Ennen vuotta 2014 Valtiovarainministeriö tarjosi budjettidatan vain HTML-dokumentteina, joten Verokuitti parsi sen kasaan niistä. Vuodesta 2014 avoin data saavutti myös VM:n[^5] ja se alkoi tarjoamaan sisältöään myös [koneluettavassa muodossa](https://budjetti.vm.fi/opendata/). Näiden suoraan koneluettavien sisältöjen käyttö olisi nykypäivänä suositeltavaa.
 
-[^5]: Haluaisimme toki uskoa, että meillä saattoi olla jotain asian kanssa tekemistä vaikka kukaan VM:stä ei koskaan ollut meihin Verokuitin puitteissa yhteydessä. 
+[^5]: Haluaisimme toki uskoa, että meillä saattoi olla jotain asian kanssa tekemistä vaikka kukaan VM:stä ei koskaan ollut meihin Verokuitin puitteissa yhteydessä.
 
 Valtion budjetteja tai talousarvioita on myös monia vuodelle, Verokuitti syystä tai toisesta perusti lukunsa hallituksen talousarvioesitykseen eikä huomioinut täydentäviä, ajantasaisia tai lisätalousarvioita pääasiassa resurssien puutteen vuoksi.
 
@@ -94,7 +94,7 @@ Mikäli jostain syystä haluaa kerätä datan HTML-sivusta, löytyy nykyään [k
 base_url <- "https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:{node}:"
 
 depts <- tribble(
-  ~node, ~dept, 
+  ~node, ~dept,
     387,  "Eduskunta",
     425,  "Tasavallan presidentti",
     445,  "Valtioneuvoston kanslia",
@@ -105,10 +105,10 @@ depts <- tribble(
     655,  "Valtiovarainministeriö",
     805,  "Opetus- ja kulttuuriministeriö",
     983,  "Maa- ja metsätalousministeriö",
-    1115, "Liikenne- ja viestintäministeriö", 
-    1185, "Työ- ja elinkeinoministeriö", 
-    1315, "Sosiaali- ja terveysministeriö", 
-    1483, "Ympäristöministeriö", 
+    1115, "Liikenne- ja viestintäministeriö",
+    1185, "Työ- ja elinkeinoministeriö",
+    1315, "Sosiaali- ja terveysministeriö",
+    1483, "Ympäristöministeriö",
     1533, "Valtionvelan korot"
   )
 ```
@@ -129,7 +129,7 @@ for (i in seq_len(nrow(depts))) {
   tbl <- tables[length(tables)] |>
     html_elements("tr") |>
     map(\(x) html_elements(x, "td"))
-  tbl <- tbl[-1:-3] |> 
+  tbl <- tbl[-1:-3] |>
     map(\(x) x[c(2, 5)])
 
   budget <- tibble(
@@ -175,7 +175,7 @@ output |>
 ```{r}
 alkuperäinen_budjetti <- output |>
   filter(!is.na(l3)) |>
-  summarise(sum = sum(sum)) |> 
+  summarise(sum = sum(sum)) |>
   pull()
 ```
 
@@ -224,8 +224,8 @@ adjusted <- output |>
   filter(sum > 0) |>
   select(!new_sum)
 
-korjattu_budjetti <- adjusted |> 
-  summarise(sum = sum(sum)) |> 
+korjattu_budjetti <- adjusted |>
+  summarise(sum = sum(sum)) |>
   pull()
 ```
 Näin korjattu budjetti osoittaa `{r} teuro_format(alkuperäinen_budjetti - korjattu_budjetti)` pienemmän loppusumman, `{r} korjattu_budjetti |> teuro_format()`.
@@ -281,9 +281,9 @@ Yksi usein pyydetty lisä Verokuittiin on ollut kunnallisverotuksen lisääminen
 Yksinkertaisimmillaan käyttäjä syöttää Verokuittiin vain kuukausitulonsa ja muut kuin ansiotuloverot arvioidaan. Käyttäjän on myös mahdollista syöttää tarkempia tietoja.
 
 ::: {layout-ncol=2}
-![](yksinkertainen.png)
+![](images/yksinkertainen.png)
 
-![](pitempi.png)
+![](images/pitempi.png)
 :::
 
 ### Tuloverot
@@ -349,8 +349,8 @@ Tilastokeskukselta ja Eurostatista löytyivät arviot siitä kuinka suuri osuus 
 ```{r}
 #| label: alv
 # Tulot verojen jälkeen
-tulot_verojen_jälkeen <- tulot + 
-  pääomatulot - 
+tulot_verojen_jälkeen <- tulot +
+  pääomatulot -
   (tulovero + pääomatulovero + kunnallisvero)
 
 # Asumiskulut, lähde: Tilastokeskus
@@ -383,7 +383,7 @@ Terveyden ja hyvinvoinnin laitoksen kulutustilastojen pohjalta arvoitiin keskim�
 ```{r}
 #| label: alkoholivero
 alkoholivero <- 10*30
-``` 
+```
 
 ### Energiavero
 
@@ -431,14 +431,14 @@ muut_verot <- 0
 
 ```{r}
 #| label: verosumma
-verosumma <- tulovero + 
-  pääomatulovero + 
-  alv + 
-  tupakkavero + 
-  alkoholivero + 
-  energiavero + 
-  ajoneuvovero + 
-  polttoainevero + 
+verosumma <- tulovero +
+  pääomatulovero +
+  alv +
+  tupakkavero +
+  alkoholivero +
+  energiavero +
+  ajoneuvovero +
+  polttoainevero +
   muut_verot
 ```
 Yhteenlasketut arvioidut suorat ja epäsuorat verot esimerkkiveronmaksajalle ovat `{r} euro_format(verosumma)`.
@@ -454,8 +454,8 @@ valtion_menot <- budjetti |>
   summarise(sum(sum)) |>
   pull()
 
-verokuitti <- budjetti |> 
-  mutate(osuus = sum/valtion_menot*verosumma) |> 
+verokuitti <- budjetti |>
+  mutate(osuus = sum/valtion_menot*verosumma) |>
   select(!sum)
 ```
 
