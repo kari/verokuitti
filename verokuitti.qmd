@@ -10,6 +10,7 @@ format:
     other-links:
       - text: Verokuitti
         href: https://www.talousviisas.fi/verokuitti/
+    code-links: repo
 editor: visual
 ---
 
@@ -31,9 +32,9 @@ Alkuperäinen Verokuitti koostui Ruby-koodista[^2], joka keräsi budjettidatan v
 
 [^2]: Ydin tästä keräysskriptin Ruby-versiosta löytyy osoitteesta <https://gist.github.com/kari/6742443>. Tämän koodin toimimisesta herran vuonna ei ole allekirjoittaneella juurikaan takeita.
 
-Ennen vuotta 2014 Valtiovarainministeriö tarjosi budjettidatan vain HTML-dokumentteina, joten Verokuitti parsi sen kasaan niistä. Vuodesta 2014 avoin data saavutti myös VM:n[^5] ja se alkoi tarjoamaan sisältöään myös [koneluettavassa muodossa](https://budjetti.vm.fi/opendata/). Näiden suoraan koneluettavien sisältöjen käyttö olisi nykypäivänä suositeltavaa.
+Ennen vuotta 2014 Valtiovarainministeriö tarjosi budjettidatan vain HTML-dokumentteina, joten Verokuitti parsi sen kasaan niistä. Vuodesta 2014 avoin data saavutti myös VM:n[^3] ja se alkoi tarjoamaan sisältöään myös [koneluettavassa muodossa](https://budjetti.vm.fi/opendata/). Näiden suoraan koneluettavien sisältöjen käyttö olisi nykypäivänä suositeltavaa.
 
-[^5]: Haluaisimme toki uskoa, että meillä saattoi olla jotain asian kanssa tekemistä vaikka kukaan VM:stä ei koskaan ollut meihin Verokuitin puitteissa yhteydessä.
+[^3]: Haluaisimme toki uskoa, että meillä saattoi olla jotain asian kanssa tekemistä vaikka kukaan VM:stä ei koskaan ollut meihin Verokuitin puitteissa yhteydessä.
 
 Valtion budjetteja tai talousarvioita on myös monia vuodelle, Verokuitti syystä tai toisesta perusti lukunsa hallituksen talousarvioesitykseen eikä huomioinut täydentäviä, ajantasaisia tai lisätalousarvioita pääasiassa resurssien puutteen vuoksi.
 
@@ -76,16 +77,16 @@ euro_format <- scales::label_currency(
 VM:n budjettisivuston pääluokkien URL-rakenne muuttui hieman joka vuosi.
 
 | Vuosi | URL-pohja |
-| ----- | --------- |
-| 2011  | http://budjetti.vm.fi/indox/indoxservlet?fullpathxpointer=/2012/TAE/vmkanta/pl{id}/pl{id}.xml%23/1&documentrole=tae2012 |
-| 2012  | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2013/tae/valtiovarainministerionKanta/YksityiskohtaisetPerustelut/{id}/{id}.html |
-| 2013  | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2014/tae/hallituksenEsitys/YksityiskohtaisetPerustelut/{id}/{id}.html |
-|   ⋮   |  ⋮  |
-| 2025  | https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:{node}: |
+|--------------------------|----------------------------------------------|
+| 2011 | http://budjetti.vm.fi/indox/indoxservlet?fullpathxpointer=/2012/TAE/vmkanta/pl{id}/pl{id}.xml%23/1&documentrole=tae2012 |
+| 2012 | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2013/tae/valtiovarainministerionKanta/YksityiskohtaisetPerustelut/{id}/{id}.html |
+| 2013 | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2014/tae/hallituksenEsitys/YksityiskohtaisetPerustelut/{id}/{id}.html |
+| ⋮ | ⋮ |
+| 2025 | https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:{node}: |
 
 jossa `{id}` viittasi pääluokkaan (esim. 21 Eduskunta), kun taas `{node}` lienee mielivaltainen (esim. Eduskunta on 387).
 
-### Eri pääluokkien hakeminen ja  yhdistäminen
+### Eri pääluokkien hakeminen ja yhdistäminen
 
 Mikäli jostain syystä haluaa kerätä datan HTML-sivusta, löytyy nykyään [koko budjetin numerotaulu yksittäisenä sivunakin](https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:127:). Alla data haetaan [erillisiltä sivuilta](https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:) koska näin Verokuitti sen aikoinaan teki syistä jotka ovat jäänet historian hämärään.
 
@@ -161,15 +162,16 @@ write_csv(output, "budjetti-2014-he.csv", col_names = FALSE, na = "")
 
 Näin on saatu kerättyä kolmella tasolla valtion menot vuodelle 2014:
 
-- `l1` = Pääluokka
-- `l2` = Menoluku
-- `l3` = Menomomentti
+-   `l1` = Pääluokka
+-   `l2` = Menoluku
+-   `l3` = Menomomentti
 
 ```{r}
 output |>
   head(n = 10) |>
   knitr::kable()
 ```
+
 (10 ensimmäistä riviä)
 
 ```{r}
@@ -192,11 +194,11 @@ Kaikkia määrärahoja ei kuitenkaan kateta suoraan veroista vaan ne tulevat esi
 Esimerkiksi vuonna 2014 Opetus- ja kulttuuriministeriön hallinnonala arvioi [Valtion osuus veikkauksen ja raha-arpajaisten voittovaroista](https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:141:211:265:269:) olevan 540 811 000 euroa. Näitä vastaavat menot taas ovat:
 
 | Menomomentti | Määräraha (1000 €) |
-| ------------ | -----------------: |
-| 29.40.53     | 103,2              |
-| 29.80.52     | 237,1              |
-| 29.90.50     | 147,4              |
-| 29.91.50     | 53,1               |
+|--------------|-------------------:|
+| 29.40.53     |              103,2 |
+| 29.80.52     |              237,1 |
+| 29.90.50     |              147,4 |
+| 29.91.50     |               53,1 |
 
 ### Vuoden 2014 korjaukset
 
@@ -228,6 +230,7 @@ korjattu_budjetti <- adjusted |>
   summarise(sum = sum(sum)) |>
   pull()
 ```
+
 Näin korjattu budjetti osoittaa `{r} teuro_format(alkuperäinen_budjetti - korjattu_budjetti)` pienemmän loppusumman, `{r} korjattu_budjetti |> teuro_format()`.
 
 ### Välisummien uudelleenlasku
@@ -260,13 +263,13 @@ Tarkasti ottaen välisummia ei ole mikään pakko laskea uudelleen, ja sen voisi
 
 ## Verokuitin laskeminen
 
-Verokuitin toinen osa on veronmaksajan suorien ja epäsuorien verojen laskeminen ja arvioiminen. Ansiotulo- ja pääomatuloverotuksen -  jotka muodostavat vain pienen osan valtion verotuloista - lisäksi arvoidaan myös seuraavat välilliset verot:
+Verokuitin toinen osa on veronmaksajan suorien ja epäsuorien verojen laskeminen ja arvioiminen. Ansiotulo- ja pääomatuloverotuksen - jotka muodostavat vain pienen osan valtion verotuloista - lisäksi arvoidaan myös seuraavat välilliset verot:
 
-- arvonlisävero
-- tupakkavero
-- alkoholivero
-- energiavero
-- ajoneuvo- ja polttoainevero
+-   arvonlisävero
+-   tupakkavero
+-   alkoholivero
+-   energiavero
+-   ajoneuvo- ja polttoainevero
 
 Laskelman ulkopuolelle on jätetty joitain vaikeammin arvioitavia veroeriä, kuten korkotulojen lähdevero sekä perintö- ja lahjavero. "Sokerivero" oli myös jätetty pois koska sitä on lähes mahdoton arvioida yksilötasolla. Suorien verojen kohdalla ei ole huomioitu mahdollisia verovähennyksiä.
 
@@ -280,7 +283,7 @@ Yksi usein pyydetty lisä Verokuittiin on ollut kunnallisverotuksen lisääminen
 
 Yksinkertaisimmillaan käyttäjä syöttää Verokuittiin vain kuukausitulonsa ja muut kuin ansiotuloverot arvioidaan. Käyttäjän on myös mahdollista syöttää tarkempia tietoja.
 
-::: {layout-ncol=2}
+::: {layout-ncol="2"}
 ![](images/yksinkertainen.png)
 
 ![](images/pitempi.png)
@@ -340,11 +343,11 @@ kunnallisvero <- 0.1974 * tulot
 
 Arvonlisäveroa varten pitää arvioida kuinka paljon rahaa menee kulutukseen.
 
-Tilastokeskukselta ja Eurostatista löytyivät arviot siitä kuinka suuri osuus verojen jälkeisistä tuloista keskimäärin[^3] menee asumiseen (~20%, Tilastokeskus) ja säästöön (~10%, Eurostat), mutta tarkemmat lähteet ovat jääneet kirjaamatta ylös. Samoin painotetun kulutuksen ALV-prosentin (12%) lähde on tuntematon[^6].
+Tilastokeskukselta ja Eurostatista löytyivät arviot siitä kuinka suuri osuus verojen jälkeisistä tuloista keskimäärin[^4] menee asumiseen (\~20%, Tilastokeskus) ja säästöön (\~10%, Eurostat), mutta tarkemmat lähteet ovat jääneet kirjaamatta ylös. Samoin painotetun kulutuksen ALV-prosentin (12%) lähde on tuntematon[^5].
 
-[^3]: Käyttäjän on toki mahdollista antaa itse tarkemmat luvut asumiskuluistaan ja säästöistään.
-[^6]: [Luku ilmestyi tekijöille mahdollisesti unessa.](https://www.reddit.com/r/AskHistorians/comments/y7k78d/what_was_the_context_of_the_famous_this_was_once/)
+[^4]: Käyttäjän on toki mahdollista antaa itse tarkemmat luvut asumiskuluistaan ja säästöistään.
 
+[^5]: [Luku ilmestyi tekijöille mahdollisesti unessa.](https://www.reddit.com/r/AskHistorians/comments/y7k78d/what_was_the_context_of_the_famous_this_was_once/)
 
 ```{r}
 #| label: alv
@@ -390,7 +393,7 @@ alkoholivero <- 10*30
 Sähkönkulutus perustuu puhtaasti asumismuotoon käyttäen Vattenfallin sivuilta löytyneitä keskikulutuksia:
 
 | Asumismuoto | Keskikulutus |
-| ----------- | ------------ |
+|-------------|--------------|
 | Kerrostalo  | 2 550 kWh    |
 | Rivitalo    | 4 800 kWh    |
 | Omakotitalo | 18 500 kWh   |
@@ -406,11 +409,11 @@ energiavero <- 2550*1.69/100
 
 Liikenteen turvallisuusvirasto (AKE) toimi hyvänä lähteenä niin ajoneuvoverotukselle, keskikulutukselle ja keskipäästöille. Oletuksena käyttäjä ajaa keskipäästöisellä (170g/km, 7,46l/100km) bensiinimoottorisella (vero 67,29 snt/l) autolla 18 300 km vuodessa.
 
-| Tyyppi          | Päästöt | Ajoneuvovero  | Kulutus                     |
-| --------------- | ------- | ------------- | --------------------------- |
-| Vähäpäästöinen  | 120g/km | 59,13 euroa   | 5,3l/100km (~ Toyota Yaris) |
-| Keskipäästöinen | 170g/km | 114,975 euroa | 7,46l/100km                 |
-| Suuripäästöinen | 230g/km | 205,86 euroa  | 10,0l/100km (~ VW Touareg)  |
+| Tyyppi          | Päästöt | Ajoneuvovero  | Kulutus                      |
+|-----------------|---------|---------------|------------------------------|
+| Vähäpäästöinen  | 120g/km | 59,13 euroa   | 5,3l/100km (\~ Toyota Yaris) |
+| Keskipäästöinen | 170g/km | 114,975 euroa | 7,46l/100km                  |
+| Suuripäästöinen | 230g/km | 205,86 euroa  | 10,0l/100km (\~ VW Touareg)  |
 
 ```{r}
 #| label: ajoneuvo- ja polttoainevero
@@ -441,6 +444,7 @@ verosumma <- tulovero +
   polttoainevero +
   muut_verot
 ```
+
 Yhteenlasketut arvioidut suorat ja epäsuorat verot esimerkkiveronmaksajalle ovat `{r} euro_format(verosumma)`.
 
 ## Verokuitti
