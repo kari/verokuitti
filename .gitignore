@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 verokuitti_*/
+/.quarto/
+/_site/
