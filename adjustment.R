@@ -1,6 +1,7 @@
 library(readr)
 
-budget <- read_csv("budjetti-2014-he.csv",
+budget <- read_csv(
+  "budjetti-2014-he.csv",
   col_names = c("l1", "l2", "l3", "sum")
 ) |>
   filter(!is.na(l3))
@@ -29,7 +30,4 @@ budget |>
   filter(adjusted_sum != sum | is.na(adjusted_sum)) |>
   mutate(sum = replace_na(adjusted_sum, 0)) |>
   select(!adjusted_sum) |>
-  write_csv("budjetti-2014-he-korjaukset.csv",
-    col_names = FALSE,
-    na = ""
-  )
+  write_csv("budjetti-2014-he-korjaukset.csv", col_names = FALSE, na = "")

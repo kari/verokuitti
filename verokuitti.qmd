@@ -32,7 +32,7 @@ Alkuperäinen Verokuitti koostui Ruby-koodista[^2], joka keräsi budjettidatan v
 
 [^2]: Ydin tästä keräysskriptin Ruby-versiosta löytyy osoitteesta <https://gist.github.com/kari/6742443>. Tämän koodin toimimisesta herran vuonna ei ole allekirjoittaneella juurikaan takeita.
 
-Ennen vuotta 2014 Valtiovarainministeriö tarjosi budjettidatan vain HTML-dokumentteina, joten Verokuitti parsi sen kasaan niistä. Vuodesta 2014 avoin data saavutti myös VM:n[^3] ja se alkoi tarjoamaan sisältöään myös [koneluettavassa muodossa](https://budjetti.vm.fi/opendata/). Näiden suoraan koneluettavien sisältöjen käyttö olisi nykypäivänä suositeltavaa.
+Ennen vuotta 2014 Valtiovarainministeriö tarjosi budjettidatan vain HTML-dokumentteina, joten Verokuitti parsi sen kasaan niistä. Vuodesta 2014 avoin data saavutti myös VM:n [^3] ja se alkoi tarjoamaan sisältöään myös [koneluettavassa muodossa](https://budjetti.vm.fi/opendata/). Näiden suoraan koneluettavien sisältöjen käyttö olisi nykypäivänä suositeltavaa.
 
 [^3]: Haluaisimme toki uskoa, että meillä saattoi olla jotain asian kanssa tekemistä vaikka kukaan VM:stä ei koskaan ollut meihin Verokuitin puitteissa yhteydessä.
 
@@ -62,14 +62,14 @@ teuro_format <- scales::label_currency(
   suffix = " t€",
   big.mark = " ",
   decimal.mark = ","
-  )
+)
 
 euro_format <- scales::label_currency(
   prefix = "",
   suffix = " €",
   big.mark = " ",
   decimal.mark = ","
-  )
+)
 ```
 
 ### Budjettisivuston URL-rakenne
@@ -77,12 +77,12 @@ euro_format <- scales::label_currency(
 VM:n budjettisivuston pääluokkien URL-rakenne muuttui hieman joka vuosi.
 
 | Vuosi | URL-pohja |
-|--------------------------|----------------------------------------------|
-| 2011 | http://budjetti.vm.fi/indox/indoxservlet?fullpathxpointer=/2012/TAE/vmkanta/pl{id}/pl{id}.xml%23/1&documentrole=tae2012 |
-| 2012 | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2013/tae/valtiovarainministerionKanta/YksityiskohtaisetPerustelut/{id}/{id}.html |
-| 2013 | http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2014/tae/hallituksenEsitys/YksityiskohtaisetPerustelut/{id}/{id}.html |
+| ------------------------ | -------------------------------------------- |
+| 2011 | <http://budjetti.vm.fi/indox/indoxservlet?fullpathxpointer=/2012/TAE/vmkanta/pl{id}/pl{id}.xml%23/1&documentrole=tae2012> |
+| 2012 | <http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2013/tae/valtiovarainministerionKanta/YksityiskohtaisetPerustelut/{id}/{id}.html> |
+| 2013 | <http://budjetti.vm.fi/indox/download.jsp?lang=fi&file=/2014/tae/hallituksenEsitys/YksityiskohtaisetPerustelut/{id}/{id}.html> |
 | ⋮ | ⋮ |
-| 2025 | https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:{node}: |
+| 2025 | <https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:133:385:{node}:> |
 
 jossa `{id}` viittasi pääluokkaan (esim. 21 Eduskunta), kun taas `{node}` lienee mielivaltainen (esim. Eduskunta on 387).
 
@@ -96,22 +96,22 @@ base_url <- "https://budjetti.vm.fi/sisalto.jsp?year=2014&lang=fi&maindoc=/2014/
 
 depts <- tribble(
   ~node, ~dept,
-    387,  "Eduskunta",
-    425,  "Tasavallan presidentti",
-    445,  "Valtioneuvoston kanslia",
-    479,  "Ulkoasiainministeriö",
-    519,  "Oikeusministeriö",
-    573,  "Sisäasiainministeriö",
-    629,  "Puolustusministeriö",
-    655,  "Valtiovarainministeriö",
-    805,  "Opetus- ja kulttuuriministeriö",
-    983,  "Maa- ja metsätalousministeriö",
-    1115, "Liikenne- ja viestintäministeriö",
-    1185, "Työ- ja elinkeinoministeriö",
-    1315, "Sosiaali- ja terveysministeriö",
-    1483, "Ympäristöministeriö",
-    1533, "Valtionvelan korot"
-  )
+  387, "Eduskunta",
+  425, "Tasavallan presidentti",
+  445, "Valtioneuvoston kanslia",
+  479, "Ulkoasiainministeriö",
+  519, "Oikeusministeriö",
+  573, "Sisäasiainministeriö",
+  629, "Puolustusministeriö",
+  655, "Valtiovarainministeriö",
+  805, "Opetus- ja kulttuuriministeriö",
+  983, "Maa- ja metsätalousministeriö",
+  1115, "Liikenne- ja viestintäministeriö",
+  1185, "Työ- ja elinkeinoministeriö",
+  1315, "Sosiaali- ja terveysministeriö",
+  1483, "Ympäristöministeriö",
+  1533, "Valtionvelan korot"
+)
 ```
 
 ```{r}
@@ -162,9 +162,9 @@ write_csv(output, "budjetti-2014-he.csv", col_names = FALSE, na = "")
 
 Näin on saatu kerättyä kolmella tasolla valtion menot vuodelle 2014:
 
--   `l1` = Pääluokka
--   `l2` = Menoluku
--   `l3` = Menomomentti
+- `l1` = Pääluokka
+- `l2` = Menoluku
+- `l3` = Menomomentti
 
 ```{r}
 output |>
@@ -265,11 +265,11 @@ Tarkasti ottaen välisummia ei ole mikään pakko laskea uudelleen, ja sen voisi
 
 Verokuitin toinen osa on veronmaksajan suorien ja epäsuorien verojen laskeminen ja arvioiminen. Ansiotulo- ja pääomatuloverotuksen - jotka muodostavat vain pienen osan valtion verotuloista - lisäksi arvoidaan myös seuraavat välilliset verot:
 
--   arvonlisävero
--   tupakkavero
--   alkoholivero
--   energiavero
--   ajoneuvo- ja polttoainevero
+- arvonlisävero
+- tupakkavero
+- alkoholivero
+- energiavero
+- ajoneuvo- ja polttoainevero
 
 Laskelman ulkopuolelle on jätetty joitain vaikeammin arvioitavia veroeriä, kuten korkotulojen lähdevero sekä perintö- ja lahjavero. "Sokerivero" oli myös jätetty pois koska sitä on lähes mahdoton arvioida yksilötasolla. Suorien verojen kohdalla ei ole huomioitu mahdollisia verovähennyksiä.
 
@@ -284,9 +284,9 @@ Yksi usein pyydetty lisä Verokuittiin on ollut kunnallisverotuksen lisääminen
 Yksinkertaisimmillaan käyttäjä syöttää Verokuittiin vain kuukausitulonsa ja muut kuin ansiotuloverot arvioidaan. Käyttäjän on myös mahdollista syöttää tarkempia tietoja.
 
 ::: {layout-ncol="2"}
-![](images/yksinkertainen.png)
+![Kuvakaappaus Verokuitin perusnäkymästä](images/yksinkertainen.png)
 
-![](images/pitempi.png)
+![Kuvakaappaus Verokuitin laajennetusta näkymästä](images/pitempi.png)
 :::
 
 ### Tuloverot
@@ -296,7 +296,7 @@ Oletetaan 2 500€/kk tulot. Vuoden 2014 kuten monen muun vuoden tuloveroasteiko
 ```{r}
 #| label: tulovero
 
-tulot <- 12*2500
+tulot <- 12 * 2500
 
 # Tuloveroasteikko 2014
 tulovero <- if (tulot < 16300) {
@@ -381,11 +381,13 @@ tupakkavero <- 0.5 * 5 * 365 * askia_päivässä
 
 ### Alkoholivero
 
-Terveyden ja hyvinvoinnin laitoksen kulutustilastojen pohjalta arvoitiin keskimäärin juotavan 10 litraa puhdasta alkoholia ja jostain keskimääräiseksi veroksi 30 €/l.
+Terveyden ja hyvinvoinnin laitoksen kulutustilastojen[^6] pohjalta arvoitiin keskimäärin juotavan 10 litraa puhdasta alkoholia ja jostain keskimääräiseksi veroksi 30 €/l.
+
+[^6]: Käytetty lähde oli entisen Stakesin sivuilla, joita ei enää ole.
 
 ```{r}
 #| label: alkoholivero
-alkoholivero <- 10*30
+alkoholivero <- 10 * 30
 ```
 
 ### Energiavero
@@ -402,12 +404,14 @@ Oletuksena käyttäjä asuu yksin kerrostalossa.
 
 ```{r}
 #| label: energiavero
-energiavero <- 2550*1.69/100
+energiavero <- 2550 * 1.69 / 100
 ```
 
 ### Ajoneuvo- ja polttoainevero
 
-Liikenteen turvallisuusvirasto (AKE) toimi hyvänä lähteenä niin ajoneuvoverotukselle, keskikulutukselle ja keskipäästöille. Oletuksena käyttäjä ajaa keskipäästöisellä (170g/km, 7,46l/100km) bensiinimoottorisella (vero 67,29 snt/l) autolla 18 300 km vuodessa.
+Liikenteen turvallisuusvirasto ja Ajoneuvohallintokeskus (AKE) toimivat[^7] hyvänä lähteenä niin ajoneuvoverotukselle, keskikulutukselle ja keskipäästöille. Oletuksena käyttäjä ajaa keskipäästöisellä (170g/km, 7,46l/100km) bensiinimoottorisella (vero 67,29 snt/l) autolla 18 300 km vuodessa.
+
+[^7]: Kuten Stakes, myös näiden virastojen nimet ja sivut ovat ehtineet muuttua viimeisen kymmenen vuoden aikan sen verran että käytettyjen lähteiden linkit ovat täysin käyttökelvottomia tänä päivänä.
 
 | Tyyppi          | Päästöt | Ajoneuvovero  | Kulutus                      |
 |-----------------|---------|---------------|------------------------------|
@@ -418,7 +422,7 @@ Liikenteen turvallisuusvirasto (AKE) toimi hyvänä lähteenä niin ajoneuvovero
 ```{r}
 #| label: ajoneuvo- ja polttoainevero
 ajoneuvovero <- 114.975
-polttoainevero <- 7.46*18300/100*67.29/100
+polttoainevero <- 7.46 * 18300 / 100 * 67.29 / 100
 ```
 
 ### Muut verot
@@ -459,7 +463,7 @@ valtion_menot <- budjetti |>
   pull()
 
 verokuitti <- budjetti |>
-  mutate(osuus = sum/valtion_menot*verosumma) |>
+  mutate(osuus = sum / valtion_menot * verosumma) |>
   select(!sum)
 ```
 

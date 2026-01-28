@@ -81,14 +81,20 @@ for (i in seq_len(nrow(depts))) {
   budget <- tibble(
     l1 = dept,
     l2 = tbl |>
-      map(\(x) x[1] |>
-        html_element("span") |>
-        html_text()) |>
+      map(\(x) {
+        x[1] |>
+          html_element("span") |>
+          html_text()
+      }) |>
       unlist(),
-    l3 = tbl |> map(\(x) x[1] |>
-      html_text() |>
-      str_replace_all("\u00A0", " ") |>
-      str_squish()) |> unlist(),
+    l3 = tbl |>
+      map(\(x) {
+        x[1] |>
+          html_text() |>
+          str_replace_all("\u00A0", " ") |>
+          str_squish()
+      }) |>
+      unlist(),
     sum = tbl |> map(\(x) x[2] |> html_text()) |> unlist()
   ) |>
     filter(sum != "—") |>
@@ -114,7 +120,8 @@ output |>
 # näistä on yleensä budjetissa mainittu, mutta siitä huolimatta nämä korjaukset
 # ovat erittäin epätieteelliset. Tämä osa on puhdasta käsityötä ja numeromagiaa.
 # kts. budjetti.csv korjatuille riveille
-adjustments <- read_csv("budjetti-2014-he-korjaukset.csv",
+adjustments <- read_csv(
+  "budjetti-2014-he-korjaukset.csv",
   col_names = c("l1", "l2", "l3", "new_sum")
 )
 

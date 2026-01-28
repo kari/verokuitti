@@ -12,7 +12,7 @@ library(readr)
 # - ajoneuvo- ja polttoaineveroa
 
 # Tulovero, bruttotulot vuodessa. alla esim. 2 500 e/kk
-tulot <- 12*2500
+tulot <- 12 * 2500
 
 # Tuloveroasteikko 2014
 # https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2013/1245#sec_1__subsec_1
@@ -42,7 +42,9 @@ pääomatulovero <- if (pääomatulot < 40000) {
 kunnallisvero <- 0.1974 * tulot
 
 # Tulot verojen jälkeen
-tulot_verojen_jälkeen <- tulot + pääomatulot - (tulovero + pääomatulovero + kunnallisvero)
+tulot_verojen_jälkeen <- tulot +
+  pääomatulot -
+  (tulovero + pääomatulovero + kunnallisvero)
 
 # Asumiskulut, lähde: ?
 asumiskulut <- 0.2 * tulot_verojen_jälkeen
@@ -69,14 +71,14 @@ polttoainevero <- 0 # 5.3 l/100km * 18300/100km * 67.29/100 e/l = 652,66e
 
 # Alkoholivero
 # Keskimäärin Suomessa juotiin 10l, vero 30e/l
-alkoholivero <- 10*30
+alkoholivero <- 10 * 30
 
 # Energiavero
 # vero 1.69 snt/kWh
 # - Kerrostalo 2550 kWh
 # - Rivitalo 4800 kWh
 # - Omakotitalo 18500 kWh
-energiavero <- 2550*1.69/100
+energiavero <- 2550 * 1.69 / 100
 
 # ALV, painotettu kulutuksen ALV-kertymä 12%, lähde: ?
 kulutus <- tulot_verojen_jälkeen - säästöt - asumiskulut
@@ -85,7 +87,15 @@ alv <- kulutus * 0.12
 # Käyttäjä pystyi antamaan muita maksettuja veroja
 muut_verot <- 0
 
-verosumma <- tulovero + pääomatulovero + tupakkavero + ajoneuvovero + polttoainevero + alkoholivero + energiavero + alv + muut_verot
+verosumma <- tulovero +
+  pääomatulovero +
+  tupakkavero +
+  ajoneuvovero +
+  polttoainevero +
+  alkoholivero +
+  energiavero +
+  alv +
+  muut_verot
 
 budjetti <- read_csv("budjetti.csv", col_names = c("l1", "l2", "l3", "sum"))
 
@@ -95,4 +105,4 @@ valtion_tulot <- budjetti |>
   summarise(sum(sum)) |>
   pull()
 
-budjetti |> mutate(osuus = sum/valtion_tulot*verosumma) |> select(!sum)
+budjetti |> mutate(osuus = sum / valtion_tulot * verosumma) |> select(!sum)
